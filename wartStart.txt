@@ -1,0 +1,776 @@
+if(@start)
+if(@banwave)
+do
+clearchat
+log(%@&prefix% Banwave is currently active\, are you sure you want to script?)
+log(%@&prefix% Press &aI&7 to continue.)
+log(%@&prefix% Press &aP&7 to stop.)
+if(KEY_I)
+break
+endif
+if(KEY_P)
+exstop(WEBSTATUS)
+endif
+loop
+endif
+endif
+unset(@changing)
+unset(@failsafe)
+unset(@staffcheck)
+unset(@antistuck)
+unset(@centering)
+unset(@desync)
+set(@allowmove)
+set(@&prefix,&6&lGonzu Core&7 >)
+notify("&cGonzu Core&7","Script &aActivating!",2000)
+exstop(START,WEBSTATUS,PROFIT,INFO)
+&string = getscoreboard(&string)
+strip(&name,%&string%)
+ifcontains(%&name%,"Your island")
+set(inisland)
+unset(@failsafe)
+set(@inislandtrue)
+else
+&string = getscoreboard(&string)
+strip(&name,%&string%)
+ifcontains(%&name%,"Village")
+set(village)
+endif
+if(!village)
+if(%DIMENSION% == "END")
+echo(/l)
+wait(1500ms)
+endif
+echo(/l)
+wait(1500ms)
+#tries = 0
+do
+wait(500ms)
+&str = getscoreboard(&str)
+strip(&str,%&str%)
+inc(#tries,1)
+if(#tries > 10)
+echo(/l)
+wait(5000ms)
+echo(/l)
+wait(5000ms)
+endif
+ifcontains(%&str%,"Hype")
+log(%@&prefix% In lobby.)
+break
+endif
+ifcontains(%&str%,"Level")
+log(%@&prefix% In lobby.)
+break
+endif
+wait(1)
+loop
+wait(1500ms)
+echo(/play skyblock)
+wait(1500ms)
+#tries = 0
+unset(gotois)
+do
+wait(500ms)
+&str = getscoreboard(&str)
+strip(&str,%&str%)
+inc(#tries,1)
+if(#tries > 10)
+echo(/l)
+wait(5000ms)
+echo(/l)
+wait(5000ms)
+echo(/play skyblock)
+wait(5000ms)
+#tries = 0
+endif
+ifcontains(%&str%,"Village")
+log(%@&prefix% In village.)
+set(gotois)
+break
+endif
+ifcontains(%&str%,"Your Island")
+log(%@&prefix% In island.)
+unset(gotois)
+break
+endif
+wait(1)
+loop
+wait(1500ms)
+if(gotois)
+echo(/is)
+wait(1500ms)
+#tries = 0
+do
+wait(500ms)
+&str = getscoreboard(&str)
+strip(&str,%&str%)
+inc(#tries,1)
+if(#tries > 10)
+echo(/l)
+wait(5000ms)
+echo(/l)
+wait(5000ms)
+echo(/play skyblock)
+wait(5000ms)
+echo(/is)
+wait(5000ms)
+#tries = 0
+endif
+ifcontains(%&str%,"Your Island")
+log(%@&prefix% In island.)
+break
+endif
+wait(1)
+loop
+wait(2000ms)
+endif
+endif
+if(village)
+echo(/is)
+wait(1500ms)
+#tries = 0
+do
+wait(500ms)
+&str = getscoreboard(&str)
+strip(&str,%&str%)
+inc(#tries,1)
+if(#tries > 10)
+echo(/l)
+wait(5000ms)
+echo(/l)
+wait(5000ms)
+echo(/play skyblock)
+wait(5000ms)
+echo(/is)
+wait(5000ms)
+#tries = 0
+endif
+ifcontains(%&str%,"Your Island")
+log(%@&prefix% In island.)
+break
+endif
+wait(1)
+loop
+wait(2000ms)
+endif
+endif
+wait(100ms)
+if(FLYING)
+do
+keydown(jump)
+wait(1ms)
+keyup(jump)
+until(!FLYING)
+endif
+untillstill
+unset(hotbar)
+unset(inventory)
+unset(space)
+pick("wooden_hoe","stone_hoe","iron_hoe","diamond_hoe","golden_hoe")
+for(#i,1,9)
+getslotitem(%#i%,&id)
+if((&id == "wooden_hoe")||(&id == "stone_hoe")||(&id == "iron_hoe")||(&id == "diamond_hoe")||(&id == "golden_hoe"))
+set(hotbar)
+endif
+next
+if(hotbar)
+else
+gui(inventory)
+do
+until(%GUI% != "NONE")
+for(#hoe,9,35)
+getslotitem(%#hoe%,&id)
+if((&id == "wooden_hoe")||(&id == "stone_hoe")||(&id == "iron_hoe")||(&id == "diamond_hoe")||(&id == "golden_hoe"))
+if(@start)
+log(%@&prefix% Hoe is in inventory.)
+endif
+set(inventory)
+endif
+next
+if(inventory)
+for(#i,36,43)
+getslotitem(%#i%,&id)
+if(&id == "air")
+set(space)
+endif
+next
+if(space)
+for(#i,9,35)
+getslotitem(%#i%,&id)
+if((&id == "wooden_hoe")||(&id == "stone_hoe")||(&id == "iron_hoe")||(&id == "diamond_hoe")||(&id == "golden_hoe"))
+if(@start)
+log(%@&prefix% Hoe in slot: &d%#i%)
+endif
+slotclick(%#i%,left,true)
+break
+endif
+next
+wait(500ms)
+if(%GUI% != "NONE")
+do
+press(escape)
+wait(300ms)
+until(%GUI% == "NONE")
+endif
+else
+log(%@&prefix% No slots in hotbar and cannot use the hoe.)
+stop()
+endif
+endif
+endif
+for(#i,1,9)
+getslotitem(%#i%,&id)
+if((&id == "wooden_hoe")||(&id == "stone_hoe")||(&id == "iron_hoe")||(&id == "diamond_hoe")||(&id == "golden_hoe"))
+if(@start)
+log(%@&prefix% Hoe is in hotbar.)
+endif
+set(hotbar)
+pick("wooden_hoe","stone_hoe","iron_hoe","diamond_hoe","golden_hoe")
+endif
+next
+if(hotbar)
+if(@start)
+log(%@&prefix% Checking if the hoe contains replenish enchant.)
+endif
+getslotitemnbt(%INVSLOT%,&id,stacksize,damage,&nbt)
+strip(&nbt,%&nbt%)
+ifcontains(%&nbt%,"Replenish")
+if(@start)
+log(%@&prefix% The hoe has replenish.)
+endif
+else
+log(%@&prefix% The hoe does not have replenish stopping.)
+stop()
+endif
+else
+log(%@&prefix% Something went wrong in the hoe checking part.)
+stop()
+endif
+if(@start)
+log(%@&prefix% Checking if you have enchanting 7.)
+endif
+getslotitemnbt(%INVSLOT%,&id,stacksize,damage,&nbt)
+strip(&nbt,%&nbt%)
+ifcontains(%&nbt%,"You do not have a high enough")
+if(@start)
+log(%@&prefix% The user cannot use replenish.)
+endif
+stop()
+else
+if(@start)
+log(%@&prefix% The user can use replenish.)
+endif
+endif
+if(@fastbreakoff)
+set(@&fb,&cOFF)
+else
+set(@&fb,&aON)
+endif
+if(@cooldownoff)
+set(@&cd,&cOFF)
+else
+set(@&cd,&aON)
+endif
+if(@profitoff)
+set(@&pc,&cOFF)
+else
+set(@&pc,&aON)
+endif
+if(@cookieoff)
+set(@&ck,&cOFF)
+else
+set(@&ck,&aON)
+endif
+if(@skipeventsoff)
+set(@&sk,&cOFF)
+else
+set(@&sk,&aON)
+endif
+if(@autogodoff)
+set(@&gd,&cOFF)
+else
+set(@&gd,&aON)
+endif
+if(@autoselloff)
+set(@&ats,&cOFF)
+else
+set(@&ats,&aON)
+endif
+if(@autogodoff)
+set(@&gd,&cOFF)
+else
+set(@&gd,&aON)
+endif
+if(@start)
+@#layersfarmed = 0
+@#rowsfarmed = 0
+#invvalue = 0
+#amount_mutant_netherwart = 0
+#amount_enchanted_netherwart = 0
+#amount_netherwart = 0
+#value_mutant_netherwart_ininv = 0
+#value_enchanted_netherwart_ininv = 0
+#value_netherwart_ininv = 0
+#added_mutant_netherwarts = 0
+#value_mutant_netherwart = 51200
+#value_enchanted_netherwart = 320
+#value_netherwart = 2
+#amount_mutant_netherwart_start = getitemstacksize("Mutant Nether Wart")
+#amount_enchanted_netherwart = getitemstacksize("Enchanted Nether Wart")
+#amount_netherwart = getitemstacksize("Nether Wart")
+#value_mutant_netherwart_ininv = %#amount_mutant_netherwart_start% * %#value_mutant_netherwart%
+#value_enchanted_netherwart_ininv = %#amount_enchanted_netherwart% * %#value_enchanted_netherwart%
+#value_netherwart_ininv = %#amount_netherwart% * %#value_netherwart%
+@#start_total = %#value_mutant_netherwart_ininv% + %#value_enchanted_netherwart_ininv% + %#value_netherwart_ininv%
+getslotitemnbt(%INVSLOT%,&it,#invstack,#datavar,&nbtinv)
+strip(&nbt,%&nbtinv%)
+match(%&nbt%,"Counter: ([\d,]+)",&counter,1)
+@&hoe_start = %&counter%
+unset(@start)
+endif
+@#antistuckcount = 0
+@#sold = 0
+if(@start)
+log(%@&prefix% Checking on which layer the player is standing.)
+endif
+set(checkder)
+if(checkder)
+if(%YPOS% == @#l1)
+if(@start)
+log(%@&prefix% Player is in layer &c1 &7.)
+endif
+@&layer = 1
+if(@&startdirection == "east")
+unset(@west)
+unset(@north)
+unset(@south)
+set(@east)
+elseif(@&startdirection == "west")
+unset(@east)
+unset(@north)
+unset(@south)
+set(@west)
+elseif(@&startdirection == "north")
+unset(@south)
+unset(@west)
+unset(@east)
+set(@north)
+elseif(@&startdirection == "south")
+unset(@north)
+unset(@west)
+unset(@east)
+set(@south)
+endif
+elseif(%YPOS% == @#l2)
+if(@start)
+log(%@&prefix% Player is in layer &c2 &7.)
+endif
+@&layer = 2
+if(@&startdirection == "west")
+unset(@west)
+unset(@north)
+unset(@south)
+set(@east)
+elseif(@&startdirection == "east")
+unset(@east)
+unset(@north)
+unset(@south)
+set(@west)
+elseif(@&startdirection == "south")
+unset(@south)
+unset(@west)
+unset(@east)
+set(@north)
+elseif(@&startdirection == "north")
+unset(@north)
+unset(@west)
+unset(@east)
+set(@south)
+endif
+elseif(%YPOS% == @#l3)
+if(@start)
+log(%@&prefix% Player is in layer &c3 &7.)
+endif
+@&layer = 3
+if(@&startdirection == "east")
+unset(@west)
+unset(@north)
+unset(@south)
+set(@east)
+elseif(@&startdirection == "west")
+unset(@east)
+unset(@north)
+unset(@south)
+set(@west)
+elseif(@&startdirection == "north")
+unset(@south)
+unset(@west)
+unset(@east)
+set(@north)
+elseif(@&startdirection == "south")
+unset(@north)
+unset(@west)
+unset(@east)
+set(@south)
+endif
+elseif(%YPOS% == @#l4)
+if(@start)
+log(%@&prefix% Player is in layer &c4 &7.)
+endif
+@&layer = 4
+if(@&startdirection == "west")
+unset(@west)
+unset(@north)
+unset(@south)
+set(@east)
+elseif(@&startdirection == "east")
+unset(@east)
+unset(@north)
+unset(@south)
+set(@west)
+elseif(@&startdirection == "south")
+unset(@south)
+unset(@west)
+unset(@east)
+set(@north)
+elseif(@&startdirection == "north")
+unset(@north)
+unset(@west)
+unset(@east)
+set(@south)
+endif
+elseif(%YPOS% == @#l5)
+if(@start)
+log(%@&prefix% Player is in layer &c5 &7.)
+endif
+@&layer = 5
+if(@&startdirection == "east")
+unset(@west)
+unset(@north)
+unset(@south)
+set(@east)
+elseif(@&startdirection == "west")
+unset(@east)
+unset(@north)
+unset(@south)
+set(@west)
+elseif(@&startdirection == "north")
+unset(@south)
+unset(@west)
+unset(@east)
+set(@north)
+elseif(@&startdirection == "south")
+unset(@north)
+unset(@west)
+unset(@east)
+set(@south)
+endif
+elseif(%YPOS% == @#l6)
+if(@start)
+log(%@&prefix% Player is in layer &c6 &7.)
+endif
+@&layer = 6
+if(@&startdirection == "west")
+unset(@west)
+unset(@north)
+unset(@south)
+set(@east)
+elseif(@&startdirection == "east")
+unset(@east)
+unset(@north)
+unset(@south)
+set(@west)
+elseif(@&startdirection == "south")
+unset(@south)
+unset(@west)
+unset(@east)
+set(@north)
+elseif(@&startdirection == "north")
+unset(@north)
+unset(@west)
+unset(@east)
+set(@south)
+endif
+elseif(%YPOS% == @#l7)
+if(@start)
+log(%@&prefix% Player is in layer &c7 &7.)
+endif
+@&layer = 7
+if(@&startdirection == "east")
+unset(@west)
+unset(@north)
+unset(@south)
+set(@east)
+elseif(@&startdirection == "west")
+unset(@east)
+unset(@north)
+unset(@south)
+set(@west)
+elseif(@&startdirection == "north")
+unset(@south)
+unset(@west)
+unset(@east)
+set(@north)
+elseif(@&startdirection == "south")
+unset(@north)
+unset(@west)
+unset(@east)
+set(@south)
+endif
+elseif(%YPOS% == @#l8)
+if(@start)
+log(%@&prefix% Player is in layer &c8 &7.)
+endif
+@&layer = 8
+if(@&startdirection == "west")
+unset(@west)
+unset(@north)
+unset(@south)
+set(@east)
+elseif(@&startdirection == "east")
+unset(@east)
+unset(@north)
+unset(@south)
+set(@west)
+elseif(@&startdirection == "south")
+unset(@south)
+unset(@west)
+unset(@east)
+set(@north)
+elseif(@&startdirection == "north")
+unset(@north)
+unset(@west)
+unset(@east)
+set(@south)
+endif
+elseif(%YPOS% == @#l9)
+if(@start)
+log(%@&prefix% Player is in layer &c9 &7.)
+endif
+@&layer = 9
+if(@&startdirection == "east")
+unset(@west)
+unset(@north)
+unset(@south)
+set(@east)
+elseif(@&startdirection == "west")
+unset(@east)
+unset(@north)
+unset(@south)
+set(@west)
+elseif(@&startdirection == "north")
+unset(@south)
+unset(@west)
+unset(@east)
+set(@north)
+elseif(@&startdirection == "south")
+unset(@north)
+unset(@west)
+unset(@east)
+set(@south)
+endif
+elseif(%YPOS% == @#l10)
+if(@start)
+log(%@&prefix% Player is in layer &c10 &7.)
+endif
+@&layer = 10
+if(@&startdirection == "west")
+unset(@west)
+unset(@north)
+unset(@south)
+set(@east)
+elseif(@&startdirection == "east")
+unset(@east)
+unset(@north)
+unset(@south)
+set(@west)
+elseif(@&startdirection == "south")
+unset(@south)
+unset(@west)
+unset(@east)
+set(@north)
+elseif(@&startdirection == "north")
+unset(@north)
+unset(@west)
+unset(@east)
+set(@south)
+endif
+elseif(%YPOS% == @#l11)
+if(@start)
+log(%@&prefix% Player is in layer &c11 &7.)
+endif
+@&layer = 11
+if(@&startdirection == "east")
+unset(@west)
+unset(@north)
+unset(@south)
+set(@east)
+elseif(@&startdirection == "west")
+unset(@east)
+unset(@north)
+unset(@south)
+set(@west)
+elseif(@&startdirection == "north")
+unset(@south)
+unset(@west)
+unset(@east)
+set(@north)
+elseif(@&startdirection == "south")
+unset(@north)
+unset(@west)
+unset(@east)
+set(@south)
+endif
+elseif(%YPOS% == @#l12)
+if(@start)
+log(%@&prefix% Player is in layer &c12 &7.)
+endif
+@&layer = 12
+if(@&startdirection == "west")
+unset(@west)
+unset(@north)
+unset(@south)
+set(@east)
+elseif(@&startdirection == "east")
+unset(@east)
+unset(@north)
+unset(@south)
+set(@west)
+elseif(@&startdirection == "south")
+unset(@south)
+unset(@west)
+unset(@east)
+set(@north)
+elseif(@&startdirection == "north")
+unset(@north)
+unset(@west)
+unset(@east)
+set(@south)
+endif
+elseif(%YPOS% == @#l13)
+if(@start)
+log(%@&prefix% Player is in layer &c13 &7.)
+endif
+@&layer = 13
+if(@&startdirection == "east")
+unset(@west)
+unset(@north)
+unset(@south)
+set(@east)
+elseif(@&startdirection == "west")
+unset(@east)
+unset(@north)
+unset(@south)
+set(@west)
+elseif(@&startdirection == "north")
+unset(@south)
+unset(@west)
+unset(@east)
+set(@north)
+elseif(@&startdirection == "south")
+unset(@north)
+unset(@west)
+unset(@east)
+set(@south)
+endif
+elseif(%YPOS% == @#l14)
+if(@start)
+log(%@&prefix% Player is in layer &c14 &7.)
+endif
+@&layer = 14
+if(@&startdirection == "west")
+unset(@west)
+unset(@north)
+unset(@south)
+set(@east)
+elseif(@&startdirection == "east")
+unset(@east)
+unset(@north)
+unset(@south)
+set(@west)
+elseif(@&startdirection == "south")
+unset(@south)
+unset(@west)
+unset(@east)
+set(@north)
+elseif(@&startdirection == "north")
+unset(@north)
+unset(@west)
+unset(@east)
+set(@south)
+endif
+elseif(%YPOS% == @#l15)
+if(@start)
+log(%@&prefix% Player is in layer &c15 &7.)
+endif
+@&layer = 15
+if(@&startdirection == "east")
+unset(@west)
+unset(@north)
+unset(@south)
+set(@east)
+elseif(@&startdirection == "west")
+unset(@east)
+unset(@north)
+unset(@south)
+set(@west)
+elseif(@&startdirection == "north")
+unset(@south)
+unset(@west)
+unset(@east)
+set(@north)
+elseif(@&startdirection == "south")
+unset(@north)
+unset(@west)
+unset(@east)
+set(@south)
+endif
+endif
+endif
+if(@east)
+looks(90,5,0.6)
+elseif(@west)
+looks(270,5,0.6)
+elseif(@north)
+looks(0,5,0.6)
+elseif(@south)
+looks(180,5,0.6)
+endif
+exstop(START,WEBSTATUS,PROFIT,INFO)
+wait(500ms)
+okay = isrunning("PROFIT")
+if(okay)
+else
+runscript(wartProfit.txt,"Profit")
+endif
+okay = isrunning("INFO")
+if(okay)
+else
+runscript(loops.txt,"Info")
+endif
+clearchat()
+if(@cooldownon)
+runscript(wartCooldown.txt,"cooldown")
+elseif(@cooldownoff)
+endif
+runscript(a.txt,"A")
+runscript(wartAntistuck.txt,"Antistuck")
+runscript(wartFailsafe.txt,"Failsafe")
+runscript(wartAttack.txt,"Attack")
+runscript(wartDebug.txt,"debug")
+runscript(wartPosition.txt,"Position")
+runscript(wartMain.txt,"Main")
+runscript(wartDesync.txt,"Sync")
+runscript(wartTpCheck.txt,"TPcheck")
+wait(5000ms)
+if(@skipeventson)
+runscript(wartJacobsEvent.txt,"EVENT")
+else
+endif
+runscript(wartAutosell.txt,"Autosell")
+if((@cookieon)||(@autogodon))
+runscript(wartAutoCookie.txt,"AUTOGODCOOKIE")
+elseif((!@cookieoff)&&(!@autogodoff))
+endif
+runscript(wartStaff.txt,"STAFF")

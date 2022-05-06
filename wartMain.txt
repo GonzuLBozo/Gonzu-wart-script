@@ -1,0 +1,73 @@
+do
+keydown(sprint)
+if((!@failsafe)&&(!@staffcheck)&&(!@antistuck))
+if(@&leftcheck != "air")
+set(@changing)
+unset(@left)
+unset(@right)
+unset(@allowmove)
+keyup(left)
+untilstill
+centerto(500,500)
+untilstill
+do
+keydown(forward)
+until(@&frontcheck != "air")
+keyup(forward)
+untilstill
+set(@centering)
+stop(movement)
+runscript(center.txt,"center")
+do
+until(!@centering)
+unset(@changing)
+echo(/sethome)
+keydown(right)
+set(@allowmove)
+set(@right)
+wait(1000ms)
+inc(@#rowsfarmed,1)
+endif
+if(@&rightcheck != "air")
+set(@changing)
+unset(@right)
+unset(@left)
+unset(@allowmove)
+keyup(right)
+untilstill
+centerto(500,500)
+untilstill
+do
+keydown(forward)
+until(@&frontcheck != "air")
+keyup(forward)
+untilstill
+set(@centering)
+runscript(center.txt,"center")
+do
+until(!@centering)
+unset(@changing)
+echo(/sethome)
+keydown(left)
+set(@allowmove)
+set(@left)
+wait(1000ms)
+inc(@#rowsfarmed,1)
+endif
+if((!@left)&&(!@right))
+if(@&frontcheck != "air")
+unset(@left)
+unset(@right)
+set(@left)
+endif
+if((@left)&&(@right))
+if(@&frontcheck != "air")
+unset(@left)
+unset(@right)
+set(@left)
+endif
+endif
+endif
+endif
+//Ends "if((!@failsafe)||(!@staffcheck))"
+loop

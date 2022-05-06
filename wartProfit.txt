@@ -1,0 +1,145 @@
+@#farmedrows = 0
+@#profit = 0
+@#profit_per_hour = 0
+@#profit_per_second = 0
+@#startinginvvalue = 0
+@#invvalue = 0
+#amount_mutant_netherwart = 0
+@#amount_enchanted_netherwart = 0
+@#amount_netherwart = 0
+@#value_mutant_netherwart_ininv = 0
+@#value_enchanted_netherwart_ininv = 0
+@#value_netherwart_ininv = 0
+@#added_mutant_netherwarts = 0
+@#value_mutant_netherwart = 51200
+@#value_enchanted_netherwart = 320
+@#value_netherwart = 2
+#amount_mutant_netherwart_start = getitemstacksize("Mutant Nether Wart")
+@#amount_enchanted_netherwart = getitemstacksize("Enchanted Nether Wart")
+@#amount_netherwart = getitemstacksize("Nether Wart")
+@#value_mutant_netherwart_ininv = %#amount_mutant_netherwart_start% * %@#value_mutant_netherwart%
+@#value_enchanted_netherwart_ininv = %@#amount_enchanted_netherwart% * %@#value_enchanted_netherwart%
+@#value_netherwart_ininv = %@#amount_netherwart% * %@#value_netherwart%
+@#startinginvvalue = %@#value_mutant_netherwart_ininv% + %@#value_enchanted_netherwart_ininv% + %@#value_netherwart_ininv%
+@#firsttimestamp = %TIMESTAMP%
+@#firsttimestampt = %TIMESTAMP%
+unsafe
+do
+@#seconds = %TIMESTAMP% - %@#firsttimestamp%
+@#minutes = %@#seconds% / 60
+@#hours = %@#minutes% / 60
+@#seconds_substractor = %@#minutes% * 60
+@#minutes_substractor = %@#hours% * 60
+@#clock_seconds = %@#seconds% - %@#seconds_substractor%
+@#clock_minutes = %@#minutes% - %@#minutes_substractor%
+#hours = #total_seconds / 3600
+#minutes = (#total_seconds - (#hours * 3600)) / 60
+#seconds = ((#total_seconds - (#hours * 3600)) - (#minutes * 60))
+@#dd = #total_seconds / 60
+FOREACH(running)
+IF(MACRONAME == "A")
+#total_seconds = MACROTIME / 1000
+ENDIF
+NEXT
+#hours = #total_seconds / 3600
+#minutes = (#total_seconds - (#hours * 3600)) / 60
+#seconds = ((#total_seconds - (#hours * 3600)) - (#minutes * 60))
+@#dd = #total_seconds / 60
+SET(&hh,"%#hours%")
+SET(&mm,"%#minutes%")
+SET(&ss,"%#seconds%")
+IF(#hours < 10)
+SET(&hh,"0%#hours%")
+ENDIF
+IF(#minutes < 10)
+SET(&mm,"0%#minutes%")
+ENDIF
+IF(#seconds < 10)
+SET(&ss,"0%#seconds%")
+ENDIF
+@#secondst = %TIMESTAMP% - %@#firsttimestampt%
+@#minutest = %@#secondst% / 60
+@#hourst = %@#minutest% / 60
+@#seconds_substractort = %@#minutest% * 60
+@#minutes_substractort = %@#hourst% * 60
+@#clock_secondst = %@#secondst% - %@#seconds_substractort%
+@#clock_minutest = %@#minutest% - %@#minutes_substractort%
+#hourst = #total_secondst / 3600
+#minutest = (#total_secondst - (#hourst * 3600)) / 60
+#secondst = ((#total_secondst - (#hourst * 3600)) - (#minutest * 60))
+@#ddt = #total_secondst / 60
+FOREACH(running)
+IF(MACRONAME == "PROFIT")
+#total_secondst = MACROTIME / 1000
+ENDIF
+NEXT
+#hourst = #total_secondst / 3600
+#minutest = (#total_secondst - (#hourst * 3600)) / 60
+#secondst = ((#total_secondst - (#hourst * 3600)) - (#minutest * 60))
+@#ddt = #total_secondst / 60
+SET(&hht,"%#hourst%")
+SET(&mmt,"%#minutest%")
+SET(&sst,"%#secondst%")
+IF(#hourst < 10)
+SET(&hht,"0%#hourst%")
+ENDIF
+IF(#minutest < 10)
+SET(&mmt,"0%#minutest%")
+ENDIF
+IF(#secondst < 10)
+SET(&sst,"0%#secondst%")
+ENDIF
+SET(@&time2t,"%&hht%:%&mmt%:%&sst%")
+SET(@&timet,"&eTime running: &a%&hht%:%&mmt%:%&sst%")
+set(@&timetotal,"&a%&hht%:%&mmt%:%&sst%")
+getslotitemnbt(%INVSLOT%,&it,#invstack,#datavar,&nbtinv)
+strip(&nbt,%&nbtinv%)
+match(%&nbt%,"Counter: ([\d,]+)",&counter,1)
+@&hoe_counter = %&counter%
+@#amount_mutant_netherwart = getitemstacksize("Mutant Nether Wart")
+@#amount_enchanted_netherwart = getitemstacksize("Enchanted Nether Wart")
+@#amount_netherwart = getitemstacksize("Nether Wart")
+@#value_mutant_netherwart_ininv = %@#amount_mutant_netherwart% * %@#value_mutant_netherwart%
+@#value_enchanted_netherwart_ininv = %@#amount_enchanted_netherwart% * %@#value_enchanted_netherwart%
+@#value_netherwart_ininv = %@#amount_netherwart% * %@#value_netherwart%
+@#invvalue = %@#value_mutant_netherwart_ininv% + %@#value_enchanted_netherwart_ininv% + %@#value_netherwart_ininv%
+#value_sold = %@#added_mutant_netherwarts% * %@#value_mutant_netherwart%
+//REGEX//
+set(@&profit,%@#profit%)
+set(@&profit_per_hour,%@#profit_per_hour%)
+set(@&profit_per_day,%@#profit_per_day%)
+set(@&profit_per_full,%@#profit_per_full%)
+set(@&estimate_profit_per_row,%#estimate_profit_per_row%)
+set(@&invvalue,%@#invvalue%)
+set(@&amount_enchanted_netherwart,%@#amount_enchanted_netherwart%)
+set(@&amount_mutant_netherwart,%@#amount_mutant_netherwart%)
+set(@&startinginvvalue,%@#startinginvvalue%)
+set(@&sold,%@#sold%)
+&regex = "(\d)(?=(\d{3})+(?!\d))"
+regexreplace(@&profit,%&regex%,"$1,")
+regexreplace(@&profit_per_hour,%&regex%,"$1,")
+regexreplace(@&profit_per_day,%&regex%,"$1,")
+regexreplace(@&profit_per_full,%&regex%,"$1,")
+regexreplace(@&estimate_profit_per_row,%&regex%,"$1,")
+regexreplace(@&invvalue,%&regex%,"$1,")
+regexreplace(@&amount_enchanted_netherwart,%&regex%,"$1,")
+regexreplace(@&amount_mutant_netherwart,%&regex%,"$1,")
+regexreplace(@&startinginvvalue,%&regex%,"$1,")
+regexreplace(@&sold,%&regex%,"$1,")
+//REGEX//
+@#profit = %@#invvalue% + %#value_sold% - %@#startinginvvalue%
+@#profit_per_second = %@#profit% / %@#seconds%
+@#profit_per_hour = %@#profit_per_second% * 3600
+@#amount_enchanted_netherwart_stack = %@#amount_enchanted_netherwart% / 64
+@#amount_mutant_netherwart_stack = %@#amount_mutant_netherwart% / 64
+@#profit_per_day = %@#profit_per_hour% * 12
+@#profit_per_full = %@#profit_per_hour% * 24
+if(!@profitoff)
+setlabel(profit,"&7&m   &r&6&l PROFIT CALCULATOR  &7&m   \n\n&eTotal Profit: &6%@&profit% coins.\n&eProfit/hr: &6%@&profit_per_hour%.\n&eProfit per 12h: &6%@&profit_per_day%.\n&eProfit per 24h: &6%@&profit_per_full%.\n\n&7&m   &r&6&l INVENTORY INFORMATION  &7&m   \n\n&eHoe counter: &a%@&hoe_counter%\n&eMutant Nether Wart: &a%@#amount_mutant_netherwart%/%@#amount_mutant_netherwart_stack% Stacks\n&eEnchanted Nether Wart: &a%@&amount_enchanted_netherwart%/%@#amount_enchanted_netherwart_stack% Stacks \n&eTotal inventory price: &a%@&invvalue%\n\n&7&m   &r&6&l INFORMATION  &7&m   \n\n%@&timet%\n&eTime until webhook: &a%@&time%\n&eCurrent layer: &a%@&layer%",allineone)
+else
+setlabel(profit,"&7&m   &r&6&l INVENTORY INFORMATION  &7&m   \n\n&eHoe counter: &a%@&hoe_counter%\n&eMutant Nether Wart: &a%@#amount_mutant_netherwart%/%@#amount_mutant_netherwart_stack% Stacks\n&eEnchanted Nether Wart: &a%@&amount_enchanted_netherwart%/%@#amount_enchanted_netherwart_stack% Stacks \n&eTotal inventory price: &a%@&invvalue%\n\n&7&m   &r&6&l INFORMATION  &7&m   \n\n%@&timet%\n&eTime until webhook: &a%@&time%\n&eCurrent layer: &a%@&layer%",allineone)
+endif
+#estimate_profit_per_row = @#profit / %@#farmedrows%
+wait(1)
+loop
+endunsafe

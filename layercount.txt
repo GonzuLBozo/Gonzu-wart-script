@@ -1,0 +1,139 @@
+log("%@&prefix% Before checking make sure you stand on the top layer and standing on dirt.")
+getidrel(0,-1,0,&id1)
+getidrel(0,0,0,&id2)
+if(&id2 == "soul_sand")
+log(%@&prefix% Not standing on dirt!)
+stop()
+endif
+if(&id1 != "dirt")
+log(%@&prefix% Not standing on dirt!)
+stop()
+endif
+wait(1)
+prompt(@#layercount,"$$?","Enter how many layers you got.")
+wait(300ms)
+if(%@#layercount% > 15)
+log(%@&prefix% MAX layer count is &c15&7.)
+log(%@&prefix% Setting layer count to &c15&7.)
+@#layercount = 15
+endif
+log("%@&prefix% Layer count: &d%@#layercount%")
+@&layers = ""
+#layerc = 0
+#y == 0
+for(#i,%YPOS%,0)
+getid(%XPOS%,%#i%,%ZPOS%,&id)
+if(&id == "dirt")
+inc(#layerc,1)
+#y = %#i% + 1
+if(#layerc = 1)
+if(@#layercount > 0)
+@#l1 = %#y%
+endif
+elseif(#layerc = 2)
+if(@#layercount > 1)
+@#l2 = %#y%
+endif
+elseif(#layerc = 3)
+if(@#layercount > 2)
+@#l3 = %#y%
+endif
+elseif(#layerc = 4)
+if(@#layercount > 3)
+@#l4 = %#y%
+endif
+elseif(#layerc = 5)
+if(@#layercount > 4)
+@#l5 = %#y%
+endif
+elseif(#layerc = 6)
+if(@#layercount > 5)
+@#l6 = %#y%
+endif
+elseif(#layerc = 7)
+if(@#layercount > 6)
+@#l7 = %#y%
+endif
+elseif(#layerc = 8)
+if(@#layercount > 7)
+@#l8 = %#y%
+endif
+elseif(#layerc = 9)
+if(@#layercount > 8)
+@#l9 = %#y%
+endif
+elseif(#layerc = 10)
+if(@#layercount > 9)
+@#l10 = %#y%
+endif
+elseif(#layerc = 11)
+if(@#layercount > 10)
+@#l11 = %#y%
+endif
+elseif(#layerc = 12)
+if(@#layercount > 11)
+@#l12 = %#y%
+endif
+elseif(#layerc = 13)
+if(@#layercount > 12)
+@#l13 = %#y%
+endif
+elseif(#layerc = 14)
+if(@#layercount > 13)
+@#l14 = %#y%
+endif
+elseif(#layerc = 15)
+if(@#layercount > 14)
+@#l15 = %#y%
+endif
+endif
+endif
+if(%#layerc% >= %@#layercount%)
+break
+endif
+next
+if(@#layercount > 0)
+log(%@&prefix% Layer 1 height: &d%@#l1%)
+endif
+if(@#layercount > 1)
+log(%@&prefix% Layer 2 height: &d%@#l2%)
+endif
+if(@#layercount > 2)
+log(%@&prefix% Layer 3 height: &d%@#l3%)
+endif
+if(@#layercount > 3)
+log(%@&prefix% Layer 4 height: &d%@#l4%)
+endif
+if(@#layercount > 4)
+log(%@&prefix% Layer 5 height: &d%@#l5%)
+endif
+if(@#layercount > 5)
+log(%@&prefix% Layer 6 height: &d%@#l6%)
+endif
+if(@#layercount > 6)
+log(%@&prefix% Layer 7 height: &d%@#l7%)
+endif
+if(@#layercount > 7)
+log(%@&prefix% Layer 8 height: &d%@#l8%)
+endif
+if(@#layercount > 8)
+log(%@&prefix% Layer 9 height: &d%@#l9%)
+endif
+if(@#layercount > 9)
+log(%@&prefix% Layer 10 height: &d%@#l10%)
+endif
+if(@#layercount > 10)
+log(%@&prefix% Layer 11 height: &d%@#l11%)
+endif
+if(@#layercount > 11)
+log(%@&prefix% Layer 12 height: &d%@#l12%)
+endif
+if(@#layercount > 12)
+log(%@&prefix% Layer 13 height: &d%@#l13%)
+endif
+if(@#layercount > 13)
+log(%@&prefix% Layer 14 height: &d%@#l14%)
+endif
+if(@#layercount > 14)
+log(%@&prefix% Layer 15 height: &d%@#l15%)
+endif

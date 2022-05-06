@@ -1,0 +1,3 @@
+centerto(500,500)
+untillstill
+unset(@centering)

@@ -1,0 +1,51 @@
+do
+setrequestheader("User-Agent","MACRO-MOD")
+setrequestheader("Content-Type","application/json")
+&server_response = httpget("https://api.snipes.wtf/bancheck",,#server_status)
+set(webstatus_status,False)
+ifmatches(%&server_response%,"Nah")
+log(%@&prefix% Websatus is &aONLINE)
+log(%@&prefix% Banwave status is &cFalse)
+set(webstatus_status,True)
+unset(@banwave)
+endif
+ifmatches(%&server_response%,"disconnect:all")
+log(%@&prefix% Websatus is &aONLINE)
+log(%@&prefix% Banwave status is &aTrue)
+set(webstatus_status,True)
+set(@banwave)
+exstop(WEBSTATUS)
+do
+setrequestheader("User-Agent","MACRO-MOD")
+setrequestheader("Content-Type","application/json")
+&server_response = httpget("https://api.snipes.wtf/bancheck",,#server_status)
+set(webstatus_status,False)
+clearchat()
+ifmatches(%&server_response%,"Nah")
+log(%@&prefix% Websatus is &aONLINE)
+log(%@&prefix% Banwave status is &cFalse)
+set(webstatus_status,True)
+break
+endif
+ifmatches(%&server_response%,"disconnect:all")
+set(@banwave)
+log(%@&prefix% Websatus is &aONLINE)
+log(%@&prefix% Banwave is &aACTIVE)
+set(webstatus_status,True)
+endif
+if(webstatus_status == False)
+log(%@&prefix% Websatus is &cOffline)
+exstop(WEBSTATUS)
+endif
+wait(5)
+loop
+unset(@banwave)
+set(@start)
+exstop(WEBSTATUS)
+runscript(wartStart.txt,"START")
+endif
+if(webstatus_status == False)
+log(%@&prefix% Websatus is &cOffline)
+endif
+wait(120)
+loop

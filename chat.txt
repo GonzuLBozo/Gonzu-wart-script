@@ -1,0 +1,74 @@
+ifcontains(%CHAT%,"You cannot afford this!")
+log(%@&prefix% > Not enough coins)
+set(@notenough)
+endif
+ifcontains(%CHAT%,"You don't have enough bits")
+log(%@&prefix% > Not enough bits)
+set(@notenough)
+endif
+ifcontains(%CHAT%,"Nether Wart Pouch empty!")
+if(!@buywart)
+log(%@&prefix% Out of nether wart!)
+set(@buywart)
+endif
+endif
+ifcontains(%CHAT%,"Couldn't match the quoted price!")
+if(!@rebuy)
+log(%@&prefix% Rebuying because you couldn't match the price before.)
+set(@rebuy)
+endif
+endif
+ifcontains(%CHAT%,"Cannot send chat message")
+log(%@&prefix% Desynced from servers\, restarting.)
+echo(/l)
+wait(2000ms)
+endif
+ifcontains(%CHAT%,"Use /lobby first!")
+log(%@&prefix% Desynced from servers\, restarting.)
+echo(/l)
+wait(2000ms)
+endif
+ifcontains(%CHAT%,"Error setting up your Skyblock session!")
+log(%@&prefix% Desynced from servers\, restarting.)
+echo(/l)
+wait(2000ms)
+endif
+ifcontains(%CHAT%,"A kick occured in your connection, so you were put in the SkyBlock lobby!")
+log(%@&prefix% Desynced from servers\, restarting.)
+echo(/l)
+wait(2000ms)
+endif
+ifcontains(%CHAT%,"You were kicked while joining that server!")
+log(%@&prefix% Desynced from servers\, restarting.)
+echo(/l)
+wait(2000ms)
+endif
+if(@autoclaim)
+ifcontains(%CHAT%,"Your inventory is full!")
+stop(AUTOCLAIM)
+log(%@&prefix% Inventory full going to sell books.)
+gui(inventory)
+wait(1000ms)
+slotclick(44,left,false)
+wait(1000ms)
+slotclick(22,left,false)
+wait(1000ms)
+for(#i,54,89)
+getslotitemnbt(%#i%,&id,,,&nbt)
+strip(&string,%&nbt%)
+if((&id != "wooden_hoe")&&(&id !="stone_hoe")&&(&id !="iron_hoe")&&(&id !="diamond_hoe")&&(&id !="golden_hoe"))
+ifcontains(%&string%,"Turbo-")
+slotclick(%#i%)
+wait(500ms)
+endif
+endif
+next
+if(%GUI% != "NONE")
+do
+press(escape)
+wait(300ms)
+until(%GUI% == "NONE")
+endif
+runscript(wartAutoclaim.txt,"AUTOCLAIM")
+endif
+endif

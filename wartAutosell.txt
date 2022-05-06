@@ -1,0 +1,242 @@
+do
+if(@autosellon)
+#amount_mutant_netherwart = getitemstacksize("Mutant Nether Wart")
+if(%#amount_mutant_netherwart% >= %@#autosell%)
+set(@autosell)
+wait(3000ms)
+exstop(AUTOSELL,INFO,PROFIT,WEBSTATUS)
+disable()
+holdmouse(false)
+unset(@allowmove)
+keyup(left)
+keyup(right)
+keyup(forward)
+keyup(back)
+wait(1000ms)
+log("&cGonzu Core &7> Reached the autosell threshold.")
+keyup(left)
+keyup(right)
+keyup(forward)
+keyup(back)
+pick(nether_star)
+looks(,90,0.6)
+wait(1000ms)
+key(attack)
+#count 0
+exstop(AUTOSELL,INFO,PROFIT,WEBSTATUS)
+do
+keyup(left)
+keyup(right)
+keyup(forward)
+keyup(back)
+pick(nether_star)
+wait(1000ms)
+pick(nether_star)
+key(attack)
+inc(#count,1)
+if(#count >= 20)
+log(%@&prefix% Failed to open GUI in 20 tries stopping.)
+keyup(left)
+keyup(right)
+keyup(forward)
+keyup(back)
+stop(ALL)
+endif
+until(%GUI% != "NONE")
+slotclick(22,left,false)
+wait(1000ms)
+for(#i,54,88)
+&itemid = getslotitemext(%#i%,&idvar,#stacksize,damage,&itemname)
+strip(&name,%&itemname%)
+ifcontains(%&name%,"Mutant Nether Wart")
+slotclick(%#i%,left,true)
+log(%@&prefix% Slot: &d%#i%&7. Contains &d%&name%)
+#mutant = %#stacksize% * 51200
+inc(#price,%#mutant%)
+wait(250ms)
+endif
+&itemid = getslotitemext(%#i%,&idvar,#stacksize,damage,&itemname)
+if(&idvar == "nether_wart")
+slotclick(%#i%,left,true)
+log(%@&prefix% Slot: &d%#i%&7. Contains &d%&idvar%)
+#wart = %#stacksize% * 20
+inc(#price,%#wart%)
+wait(250ms)
+endif
+&itemid = getslotitemext(%#i%,&idvar,#stacksize,damage,&itemname)
+if(&idvar == "stone")
+slotclick(%#i%,left,true)
+log(%@&prefix% Slot: &d%#i%&7. Contains &d%&idvar%)
+wait(250ms)
+endif
+next
+if(%GUI% != "NONE")
+do
+press(escape)
+wait(300ms)
+until(%GUI% == "NONE")
+endif
+pick("wooden_hoe","stone_hoe","iron_hoe","diamond_hoe","golden_hoe")
+@#farmedrows = 0
+@#profit = 0
+@#profit_per_hour = 0
+@#profit_per_second = 0
+@#startinginvvalue = 0
+@#invvalue = 0
+#amount_mutant_netherwart = 0
+@#amount_enchanted_netherwart = 0
+@#amount_netherwart = 0
+@#value_mutant_netherwart_ininv = 0
+@#value_enchanted_netherwart_ininv = 0
+@#value_netherwart_ininv = 0
+@#added_mutant_netherwarts = 0
+if(@east)
+looks(90,5,0.6)
+elseif(@west)
+looks(270,5,0.6)
+elseif(@north)
+looks(0,5,0.6)
+elseif(@south)
+looks(180,5,0.6)
+endif
+wait(200ms)
+stop(cooldown)
+stop(cookie)
+stop(tpcheck)
+stop(antistuck)
+stop(attack)
+stop(failsafe)
+stop(debug)
+stop(staff)
+stop(main)
+stop(sync)
+stop(staff)
+stop(Position)
+set(@allowmove)
+wait(1000ms)
+&amount = getbalance(&amount)
+&bitsam = getbits(&bitsam)
+set(&price,%#price%)
+&regex = "(\d)(?=(\d{3})+(?!\d))"
+regexreplace(&price,%&regex%,"$1,")
+set(@&sold,%@#sold%)
+&regex = "(\d)(?=(\d{3})+(?!\d))"
+regexreplace(@&sold,%&regex%,"$1,")
+//Sending player and script info
+&webhook = {"content": null,"embeds": [{ "title": "Autosell.", "description": "Sold just now: %&price%\n\n**Player Character Information**\nMinecraft username: %PLAYER%.\nCoins in purse: %&amount%.\nTotal bits: %&bitsam%\nCoordinates: X %XPOS%|Y %YPOS%|Z %ZPOS%.\nTime of action: %TIME%.","color": 16711680,"footer": {"text": "Thanks for buying from Gonzu Core.","icon_url": "https://cdn.discordapp.com/attachments/943107449295097866/943520553426366494/standard_8.gif"},"timestamp": "0001-01-1T22:00:00.000Z"}],"username": "Gonzu Wart","avatar_url": "https://cdn.discordapp.com/attachments/943107449295097866/943525434841243709/latest.png"}
+setrequestheader("User-Agent","MACRO-MOD")
+setrequestheader("Content-Type","application/json")
+httppost("%@&url%",%&webhook%,#response_status)
+@#firsttimestamp = %TIMESTAMP%
+runscript(wartStart.txt,"START")
+exstop(START,INFO,WEBSTATUS)
+wait(5000ms)
+endif
+endif
+#stone = getitemstacksize("Stone")
+if(#stone != 0)
+wait(10)
+#stone = getitemstacksize("Stone")
+if(#stone != 0)
+set(@autosell)
+wait(3000ms)
+exstop(AUTOSELL,INFO,PROFIT,WEBSTATUS)
+disable()
+holdmouse(false)
+unset(@allowmove)
+keyup(left)
+keyup(right)
+keyup(forward)
+keyup(back)
+wait(1000ms)
+log("&cGonzu Core &7> Stone found in inventory\, selling it.")
+keyup(left)
+keyup(right)
+keyup(forward)
+keyup(back)
+pick(nether_star)
+looks(,90,0.6)
+wait(1000ms)
+key(attack)
+#count 0
+exstop(AUTOSELL,INFO,PROFIT,WEBSTATUS)
+do
+keyup(left)
+keyup(right)
+keyup(forward)
+keyup(back)
+pick(nether_star)
+wait(1000ms)
+pick(nether_star)
+key(attack)
+inc(#count,1)
+if(#count >= 20)
+log(%@&prefix% Failed to open GUI in 20 tries stopping.)
+keyup(left)
+keyup(right)
+keyup(forward)
+keyup(back)
+stop(ALL)
+endif
+until(%GUI% != "NONE")
+slotclick(22,left,false)
+wait(1000ms)
+for(#i,54,88)
+&itemid = getslotitemext(%#i%,&idvar,#stacksize,damage,&itemname)
+if(&idvar == "stone")
+slotclick(%#i%,left,true)
+log(%@&prefix% Slot: &d%#i%&7. Contains &d%&idvar%)
+wait(250ms)
+endif
+next
+if(%GUI% != "NONE")
+do
+press(escape)
+wait(300ms)
+until(%GUI% == "NONE")
+endif
+pick("wooden_hoe","stone_hoe","iron_hoe","diamond_hoe","golden_hoe")
+if(@east)
+looks(90,5,0.6)
+elseif(@west)
+looks(270,5,0.6)
+elseif(@north)
+looks(0,5,0.6)
+elseif(@south)
+looks(180,5,0.6)
+endif
+wait(200ms)
+stop(cooldown)
+stop(cookie)
+stop(tpcheck)
+stop(antistuck)
+stop(attack)
+stop(failsafe)
+stop(debug)
+stop(staff)
+stop(main)
+stop(sync)
+stop(staff)
+stop(Position)
+set(@allowmove)
+wait(1000ms)
+&amount = getbalance(&amount)
+&bitsam = getbits(&bitsam)
+set(&price,%#price%)
+&regex = "(\d)(?=(\d{3})+(?!\d))"
+regexreplace(&price,%&regex%,"$1,")
+set(@&sold,%@#sold%)
+&regex = "(\d)(?=(\d{3})+(?!\d))"
+regexreplace(@&sold,%&regex%,"$1,")
+//Sending player and script info
+&webhook = {"content": null,"embeds": [{ "title": "Autosell.", "description": "Sold stone\n\n**Player Character Information**\nMinecraft username: %PLAYER%.\nCoins in purse: %&amount%.\nTotal bits: %&bitsam%\nCoordinates: X %XPOS%|Y %YPOS%|Z %ZPOS%.\nTime of action: %TIME%.","color": 16711680,"footer": {"text": "Thanks for buying from Gonzu Core.","icon_url": "https://cdn.discordapp.com/attachments/943107449295097866/943520553426366494/standard_8.gif"},"timestamp": "0001-01-1T22:00:00.000Z"}],"username": "Gonzu Wart","avatar_url": "https://cdn.discordapp.com/attachments/943107449295097866/943525434841243709/latest.png"}
+setrequestheader("User-Agent","MACRO-MOD")
+setrequestheader("Content-Type","application/json")
+httppost("%@&url%",%&webhook%,#response_status)
+@#firsttimestamp = %TIMESTAMP%
+runscript(wartStart.txt,"START")
+exstop(START,INFO,WEBSTATUS)
+wait(5000ms)
+endif
+endif
+loop

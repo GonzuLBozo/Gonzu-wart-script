@@ -1,0 +1,98 @@
+unset(@eventstarted)
+unset(active)
+do
+if(@skipeventson)
+&jacob = getscoreboard(&jacob)
+strip(&jacob,%&jacob%)
+ifcontains(%&jacob%,"Jacob's")
+if(!active)
+set(@eventstarted)
+unset(bronze)
+unset(gold)
+unset(silver)
+log(%@&prefix% Jacob's Event is active.)
+set(active)
+do
+&string = getscoreboard(&string)
+strip(&string,%&string%)
+match(%&string%,"with",&place,1)
+ifmatches(%&string%,"BRONZE with",&place,1)
+&place = "BRONZE"
+endif
+ifmatches(%&string%,"SILVER with",&place,1)
+&place = "SILVER"
+endif
+ifmatches(%&string%,"GOLD with",&place,1)
+&place = "GOLD"
+set(stop)
+endif
+getscoreboard(&scoreboard)
+strip(&scoreboard,%&scoreboard%)
+ifcontains(%&scoreboard%,"with")
+&regex = "(?<=with )(.*?)(?=,)"
+else
+set(stop)
+endif
+ifcontains(%&scoreboard%,"Collected")
+&regex = "(?<=Collected )(.*?)(?=,)"
+endif
+ifcontains(%&scoreboard%,"Jacob's")
+else
+set(stop)
+endif
+match(%&scoreboard%,%&regex%,&match)
+set(#match,%&match%)
+until((#match >= 150)||(stop))
+log(%@&prefix% Waiting for the jacob's Event to end.)
+keyup(left)
+keyup(right)
+keyup(forward)
+keyup(back)
+unset(@allowmove)
+disable()
+holdmouse(false)
+exstop(INFO,EVENT,PROFIT,WEBSTATUS)
+&amount = getbalance(&amount)
+&bitsam = getbits(&bitsam)
+&webhook = {"content": null,"embeds": [{ "title": "Jacob's Event Started", "description": "Placement - %&place%\n\n**Player Character Information**\nMinecraft username: %PLAYER%.\nCoins in purse: %&amount%.\nTotal bits: %&bitsam%\nCoordinates: X %XPOS%|Y %YPOS%|Z %ZPOS%.\n\nTime of action: %TIME%","color": 16711680,"footer": {"text": "Thanks for buying from Gonzu Core.","icon_url": "https://cdn.discordapp.com/attachments/943107449295097866/943520553426366494/standard_8.gif"},"timestamp": "0001-01-1T22:00:00.000Z"}],"username": "Gonzu Wart","avatar_url": "https://cdn.discordapp.com/attachments/943107449295097866/943525434841243709/latest.png"}
+setrequestheader("User-Agent","MACRO-MOD")
+setrequestheader("Content-Type","application/json")
+httppost("%@&url%",%&webhook%,#response_status)
+do
+&jacob2 = getscoreboard(&jacob2)
+strip(&jacob2,%&jacob2%)
+ifcontains(%&jacob2%,"Contest")
+keyup(left)
+keyup(right)
+keyup(forward)
+keyup(back)
+unset(@allowmove)
+disable()
+holdmouse(false)
+else
+break
+endif
+wait(1)
+loop
+@#farmedrows = 0
+@#profit = 0
+@#profit_per_hour = 0
+@#profit_per_second = 0
+@#startinginvvalue = 0
+@#invvalue = 0
+#amount_mutant_netherwart = 0
+@#amount_enchanted_netherwart = 0
+@#amount_netherwart = 0
+@#value_mutant_netherwart_ininv = 0
+@#value_enchanted_netherwart_ininv = 0
+@#value_netherwart_ininv = 0
+set(@allowmove)
+log(%@&prefix% Starting to farm again,)
+runscript(wartStart.txt,"START")
+unset(active)
+exstop(START,INFO,PROFIT,WEBSTATUS)
+@#firsttimestamp = %TIMESTAMP%
+endif
+endif
+endif
+loop

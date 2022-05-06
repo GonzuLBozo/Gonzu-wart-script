@@ -1,0 +1,41 @@
+do
+wait(%@#cooldowntick%)
+if((!@failsafe)&&(!@antistuck)&&(!@staffcheck))
+&amount = getbalance(&amount)
+&bitsam = getbits(&bitsam)
+&webhook = {"content": null,"embeds": [{ "title": "Cooldown.", "description": "Script is cooling down.\n\n**Player Character Information**\nMinecraft username: %PLAYER%.\nCoins in purse: %&amount%.\nTotal bits: %&bitsam%\nCoordinates: X %XPOS%|Y %YPOS%|Z %ZPOS%.","color": 16711680,"footer": {"text": "Thanks for buying from Gonzu Core.","icon_url": "https://cdn.discordapp.com/attachments/943107449295097866/943520553426366494/standard_8.gif"},"timestamp": "0001-01-1T22:00:00.000Z"}],"username": "Gonzu Wart","avatar_url": "https://cdn.discordapp.com/attachments/943107449295097866/943525434841243709/latest.png"}
+setrequestheader("User-Agent","MACRO-MOD")
+setrequestheader("Content-Type","application/json")
+httppost("%@&url%",%&webhook%,#response_status)
+log(%@&prefix% A hour has passed cooling down.)
+exstop(COOLDOWN,INFO,WEBSTATUS)
+disable()
+holdmouse(false)
+setlabel(profit,"",profit)
+keyup(left)
+keyup(right)
+keyup(forward)
+keyup(back)
+wait(18000t)
+log(%@&prefix% Done waiting for 15 minutes, and starting again.)
+exstop(COOLDOWN,INFO,WEBSTATUS)
+echo(/l)
+wait(5000ms)
+echo(/l)
+wait(5000ms)
+if(FLYING)
+do
+keydown(sneak)
+until(!FLYING)
+keyup(sneak)
+endif
+&amount = getbalance(&amount)
+&bitsam = getbits(&bitsam)
+&webhook = {"content": null,"embeds": [{ "title": "Cooldown.", "description": "Script is done cooling down.\n\n**Player Character Information**\nMinecraft username: %PLAYER%.\nCoins in purse: %&amount%.\nTotal bits: %&bitsam%\nCoordinates: X %XPOS%|Y %YPOS%|Z %ZPOS%.\nTime of action: %TIME%.","color": 16711680,"footer": {"text": "Thanks for buying from Gonzu Core.","icon_url": "https://cdn.discordapp.com/attachments/943107449295097866/943520553426366494/standard_8.gif"},"timestamp": "0001-01-1T22:00:00.000Z"}],"username": "Gonzu Wart","avatar_url": "https://cdn.discordapp.com/attachments/943107449295097866/943525434841243709/latest.png"}
+setrequestheader("User-Agent","MACRO-MOD")
+setrequestheader("Content-Type","application/json")
+httppost("%@&url%",%&webhook%,#response_status)
+runscript(wartStart.txt,"START")
+exstop(START,INFO,WEBSTATUS)
+endif
+loop

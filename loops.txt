@@ -1,0 +1,22 @@
+do
+log(%@&prefix% Waiting for %@#wbtime% seconds and sending a webhook.)
+@#ltime = 0
+do
+wait(1000ms)
+inc(@#ltime,1)
+@#time = %@#wbtime% - %@#ltime%
+set(@&time,%@#time% seconds)
+until(@#ltime == %@#wbtime%)
+//Gathering player info.
+log(%@&prefix% Collecting information and sending information to the specified webhook.)
+&amount = getbalance(&amount)
+&bitsam = getbits(&bitsam)
+//Sending player and script info
+log(%@&prefix% Sending webhook since %@#wbtime% has passed.)
+&webhook = {"content": null,"embeds": [{ "title": "Nether Wart Script Notification.", "description": "**Profit info**\nTotal profit: %@&profit%\nInventory price: %@&invvalue%\nProfit per hour: %@&profit_per_hour%\nProfit per 12 hours: %@&profit_per_day%\nProfit per 24 hours: %@&profit_per_full%\nTime running : %@&time2t%\n\n**Inventory info**\nHoe counter: %@&hoe_counter%\nTotal Mutant Netherwart: %@#amount_mutant_netherwart%|%@#amount_mutant_netherwart_stack% Stack\nTotal Enchanted Nether Wart: %@#amount_enchanted_netherwart%|%@#amount_enchanted_netherwart_stack% Stack\n\n**Player Character Information**\nMinecraft username: %PLAYER%.\nCoins in purse: %&amount%.\nTotal bits: %&bitsam%\nCoordinates: X %XPOS%|Y %YPOS%|Z %ZPOS%.\nTime of action: %TIME%.","color": 16711680,"footer": {"text": "Thanks for buying from Gonzu Core.","icon_url": "https://cdn.discordapp.com/attachments/943107449295097866/943520553426366494/standard_8.gif"},"timestamp": "0001-01-1T22:00:00.000Z"}],"username": "Gonzu Wart","avatar_url": "https://cdn.discordapp.com/attachments/943107449295097866/943525434841243709/latest.png"}
+setrequestheader("User-Agent","MACRO-MOD")
+setrequestheader("Content-Type","application/json")
+httppost("%@&url%",%&webhook%,#response_status)
+stop(AUTOGODCOOKIE)
+runscript(wartAutoCookie.txt,"AUTOGODCOOKIE")
+loop

@@ -1,0 +1,17 @@
+if(@east)
+#correct = 90
+elseif(@west)
+#correct = 270
+elseif(@north)
+#correct = 0
+elseif(@south)
+#correct = 180
+endif
+do(10)
+&webhook = {"content": "@everyone \nMinecraft player **%PLAYER%** is most likely getting staff checked!","embeds": null,"username": "Gonzu Core","avatar_url": "https://cdn.discordapp.com/attachments/943105990860095501/946480485956218940/mutant.png"}
+setrequestheader("User-Agent","MACRO-MOD")
+setrequestheader("Content-Type","application/json")
+httppost("%@&url%",%&webhook%,#response_status)
+wait(1)
+loop
+httppost("%@&url%",%&webhook%,#response_status)

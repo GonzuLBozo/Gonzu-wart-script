@@ -1,0 +1,5 @@
+if(@fastbreakoff)
+holdmouse(true)
+elseif(@fastbreakon)
+enable("nether_wart",%@#bps%)
+endif

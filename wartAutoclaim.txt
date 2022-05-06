@@ -1,0 +1,371 @@
+unsafe(1000)
+set(@autoclaim)
+pick(nether_star)
+looks(,90,0.6)
+wait(1000ms)
+key(attack)
+#count 0
+do
+keyup(left)
+keyup(right)
+keyup(forward)
+keyup(back)
+pick(nether_star)
+wait(1000ms)
+pick(nether_star)
+key(attack)
+inc(#count,1)
+if(#count >= 20)
+log(%@&prefix% Failed to open GUI in 20 tries stopping.)
+keyup(left)
+keyup(right)
+keyup(forward)
+keyup(back)
+stop(ALL)
+endif
+until(%GUI% != "NONE")
+slotclick(22,left,false)
+wait(1000ms)
+for(#i,54,88)
+&itemid = getslotitemext(%#i%,&idvar,#stacksize,damage,&itemname)
+strip(&name,%&itemname%)
+ifcontains(%&name%,"Mutant Nether Wart")
+slotclick(%#i%,left,true)
+log(%@&prefix% Slot: &d%#i%&7. Contains &d%&name%)
+#mutant = %#stacksize% * 51200
+inc(#price,%#mutant%)
+wait(250ms)
+endif
+&itemid = getslotitemext(%#i%,&idvar,#stacksize,damage,&itemname)
+if(&idvar == "nether_wart")
+slotclick(%#i%,left,true)
+log(%@&prefix% Slot: &d%#i%&7. Contains &d%&idvar%)
+#wart = %#stacksize% * 20
+inc(#price,%#wart%)
+wait(250ms)
+endif
+next
+if(%GUI% != "NONE")
+do
+press(escape)
+wait(300ms)
+until(%GUI% == "NONE")
+endif
+wait(1000ms)
+echo(/hub)
+wait(3000ms)
+unset(village)
+&string = getscoreboard(&string)
+strip(&name,%&string%)
+if(%DIMENSION% == "END")
+echo(/l)
+wait(1500ms)
+endif
+ifcontains(%&name%,"Village")
+set(village)
+endif
+if(!village)
+if(%DIMENSION% == "END")
+echo(/l)
+wait(1500ms)
+endif
+echo(/l)
+wait(1500ms)
+#tries = 0
+do
+wait(500ms)
+&str = getscoreboard(&str)
+strip(&str,%&str%)
+inc(#tries,1)
+if(#tries > 10)
+echo(/l)
+wait(5000ms)
+echo(/l)
+wait(5000ms)
+endif
+ifcontains(%&str%,"Hype")
+log(%@&prefix% In lobby.)
+break
+endif
+ifcontains(%&str%,"Level")
+log(%@&prefix% In lobby.)
+break
+endif
+wait(1)
+loop
+wait(2000ms)
+echo(/play skyblock)
+wait(2000ms)
+echo(/hub)
+wait(2000ms)
+#tries = 0
+unset(gotois)
+do
+wait(500ms)
+&str = getscoreboard(&str)
+strip(&str,%&str%)
+inc(#tries,1)
+if(#tries > 10)
+echo(/l)
+wait(5000ms)
+echo(/l)
+wait(5000ms)
+echo(/play skyblock)
+wait(5000ms)
+echo(/hub)
+wait(5000ms)
+#tries = 0
+endif
+ifcontains(%&str%,"Village")
+log(%@&prefix% In village.)
+set(village)
+break
+endif
+wait(1)
+loop
+endif
+if(village)
+do
+looks(90,0,0.075)
+keydown(forward)
+until(XPOS == 16)
+keyup(forward)
+do
+looks(180,0,0.075)
+keydown(sneak)
+keydown(forward)
+until(ZPOS == -67)
+keyup(forward)
+do
+looks(90,0,0.075)
+keydown(forward)
+until(XPOS == 22)
+keyup(forward)
+do
+looks(0,3,0.075)
+keydown(sneak)
+keydown(forward)
+until(ZPOS == -68)
+keyup(forward)
+gui(inventory)
+wait(1000ms)
+#count = 0
+for(#i,9,44)
+getslotitem(%&i%,&id)
+if(&id == "air")
+inc(#count,1)
+endif
+next
+if(#count != 0)
+do
+press(escape)
+wait(500ms)
+until(%GUI% == "NONE")
+do(30)
+do
+foreach("entities(filter:[{name:.*Jacob*}])")
+do
+looks(%ENTITYYAWFROMPLAYER%,%ENTITYPITCHFROMPLAYER%,0.33)
+wait(300ms)
+key(use)
+wait(500ms)
+until(%GUI% != "NONE")
+break
+next
+break
+loop
+do
+looks(%ENTITYYAWFROMPLAYER%,%ENTITYPITCHFROMPLAYER%,0.33)
+wait(300ms)
+key(use)
+wait(500ms)
+until(%GUI% != "NONE")
+wait(1000ms)
+getslotitem(15,&id)
+if(&id == "wheat")
+slotclicK(15,left,false)
+wait(1000ms)
+endif
+unset(found)
+for(#i,10,43)
+getslotitemnbt(%#i%,&id,,,&nbt)
+strip(&string,%&nbt%)
+ifcontains(%&string%,"Click to claim")
+slotclick(%#i%)
+set(found)
+wait(500ms)
+endif
+next
+if(!found)
+break
+endif
+loop
+unset(done)
+if(%GUI% != "NONE")
+do
+press(escape)
+wait(300ms)
+until(%GUI% == "NONE")
+endif
+do
+do
+foreach("entities(filter:[{name:.*Jacob*}])")
+do
+looks(%ENTITYYAWFROMPLAYER%,%ENTITYPITCHFROMPLAYER%,0.33)
+wait(300ms)
+key(use)
+wait(500ms)
+until(%GUI% != "NONE")
+break
+next
+break
+loop
+do
+looks(%ENTITYYAWFROMPLAYER%,%ENTITYPITCHFROMPLAYER%,0.33)
+wait(300ms)
+key(use)
+wait(500ms)
+until(%GUI% != "NONE")
+wait(500ms)
+getslotitem(15,&id)
+if(&id == "wheat")
+slotclicK(15,left,false)
+wait(500ms)
+endif
+getslotitem(53,&id)
+if(&id == "arrow")
+log(%@&prefix% Everything claimed going to the next page)
+do(30)
+do
+foreach("entities(filter:[{name:.*Jacob*}])")
+do
+looks(%ENTITYYAWFROMPLAYER%,%ENTITYPITCHFROMPLAYER%,0.33)
+wait(300ms)
+key(use)
+wait(500ms)
+until(%GUI% != "NONE")
+break
+next
+break
+loop
+do
+looks(%ENTITYYAWFROMPLAYER%,%ENTITYPITCHFROMPLAYER%,0.33)
+wait(300ms)
+key(use)
+wait(500ms)
+until(%GUI% != "NONE")
+wait(500ms)
+getslotitem(15,&id)
+if(&id == "wheat")
+slotclicK(15,left,false)
+wait(500ms)
+endif
+slotclicK(53,left,false)
+wait(500ms)
+unset(found)
+for(#i,10,43)
+getslotitemnbt(%#i%,&id,,,&nbt)
+strip(&string,%&nbt%)
+ifcontains(%&string%,"Click to claim")
+slotclick(%#i%)
+set(found)
+wait(500ms)
+endif
+next
+if(!found)
+break
+endif
+loop
+else
+set(done)
+endif
+until(done)
+else
+log(%@&prefix% Inventory full going to sell books.)
+if(%GUI% != "NONE")
+do
+press(escape)
+wait(300ms)
+until(%GUI% == "NONE")
+endif
+gui(inventory)
+wait(500ms)
+slotclick(44,left,false)
+wait(500ms)
+slotclick(22,left,false)
+wait(500ms)
+for(#i,54,89)
+getslotitemnbt(%#i%,&id,,,&nbt)
+strip(&string,%&nbt%)
+if((&id != "wooden_hoe")&&(&id !="stone_hoe")&&(&id !="iron_hoe")&&(&id !="diamond_hoe")&&(&id !="golden_hoe"))
+ifcontains(%&string%,"Turbo-")
+slotclick(%#i%)
+wait(500ms)
+endif
+endif
+next
+if(%GUI% != "NONE")
+do
+press(escape)
+wait(300ms)
+until(%GUI% == "NONE")
+endif
+runscript(wartAutoclaim.txt,"AUTOCLAIM")
+stop()
+endif
+else
+log(%@&prefix% Wrong location.)
+endif
+unset(@autoclaim)
+if(%GUI% != "NONE")
+do
+press(escape)
+wait(300ms)
+until(%GUI% == "NONE")
+endif
+log(%@&prefix% Going to sell everything.)
+gui(inventory)
+wait(500ms)
+slotclick(44,left,false)
+wait(500ms)
+slotclick(22,left,false)
+wait(500ms)
+for(#i,54,89)
+getslotitemnbt(%#i%,&id,,,&nbt)
+strip(&string,%&nbt%)
+if((&id != "wooden_hoe")&&(&id !="stone_hoe")&&(&id !="iron_hoe")&&(&id !="diamond_hoe")&&(&id !="golden_hoe"))
+ifcontains(%&string%,"Turbo-")
+slotclick(%#i%)
+wait(500ms)
+endif
+endif
+next
+if(%GUI% != "NONE")
+do
+press(escape)
+wait(300ms)
+until(%GUI% == "NONE")
+endif
+echo(/bz)
+wait(500ms)
+slotclick(38,left,false)
+wait(500ms)
+slotclick(11,left,false)
+wait(500ms)
+slotclick(11,left,false)
+wait(500ms)
+slotclick(11,left,false)
+wait(500ms)
+slotclick(11,left,false)
+wait(500ms)
+slotclick(11,left,false)
+wait(500ms)
+slotclick(11,left,false)
+wait(500ms)
+if(%GUI% != "NONE")
+do
+press(escape)
+wait(300ms)
+until(%GUI% == "NONE")
+endif
+endunsafe

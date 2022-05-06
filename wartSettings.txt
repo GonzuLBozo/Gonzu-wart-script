@@ -1,0 +1,311 @@
+do
+if(@fastbreakoff)
+set(@&fb,%P%cOFF)
+elseif(@fastbreakon)
+set(@&fb,%P%aON)
+elseif((!@fastbreakon)&&(!@fastbreakoff))
+set(@&fb,%P%4ERROR)
+endif
+if(@cooldownoff)
+set(@&cd,%P%cOFF)
+elseif(@cooldownon)
+set(@&cd,%P%aON)
+elseif((!@cooldownon)&&(!@cooldownoff))
+set(@&cd,%P%4ERROR)
+endif
+if(@profitoff)
+set(@&pc,%P%cOFF)
+elseif(@profiton)
+set(@&pc,%P%aON)
+elseif((!@profitoff)&&(!@profiton))
+set(@&pc,%P%4ERROR)
+endif
+if(@cookieoff)
+set(@&ck,%P%cOFF)
+elseif(@cookieon)
+set(@&ck,%P%aON)
+elseif((!@cookieon)&&(!@cookieoff))
+set(@&ck,%P%4ERROR)
+endif
+if(@skipeventsoff)
+set(@&sk,%P%cOFF)
+elseif(@skipeventson)
+set(@&sk,%P%aON)
+elseif((!@skipeventson)&&(!@skipeventsoff))
+set(@&sk,%P%4ERROR)
+endif
+if(@autogodoff)
+set(@&gd,%P%cOFF)
+elseif(@autogodon)
+set(@&gd,%P%aON)
+elseif((!@autogodon)&&(!@autogodoff))
+set(@&gd,%P%4ERROR)
+endif
+if(@autoselloff)
+set(@&ats,%P%cOFF)
+elseif(@autosellon)
+set(@&ats,%P%aON)
+elseif((!@autosellon)&&(!@autoselloff))
+set(@&ats,%P%4ERROR)
+endif
+if(@spamwebhookoff)
+set(@&spw,%P%cOFF)
+elseif(@spamwebhookon)
+set(@&spw,%P%aON)
+elseif((!@spamwebhookon)&&(!@spamwebhookoff))
+set(@&spw,%P%4ERROR)
+endif
+if(@displayoff)
+set(@&dsp,%P%cOFF)
+elseif(@displayon)
+set(@&dsp,%P%aON)
+elseif((!@displayon)&&(!@displayoff))
+set(@&dsp,%P%4ERROR)
+endif
+if(@eastset)
+set(&direction,%P%9EAST)
+elseif(@westset)
+set(&direction,%P%9WEST)
+elseif(@northset)
+set(&direction,%P%9NORTH)
+elseif(@southset)
+set(&direction,%P%9SOUTH)
+elseif((!@eastset)&&(!@westset)&&(!@northset)&&(!@southset))
+set(&direction,%P%4ERROR)
+endif
+prompt(&mainmenu,"$$[selection[%P%c%P%lExit Menu,,%P%r%P%a%P%lScript Config,%P%61:  %P%7%P%lProfit Calc > %@&pc%,%P%62:  %P%7%P%lCooldown > %@&cd%,%P%63:  %P%7%P%lAuto Cookie > %@&ck%,%P%64:  %P%7%P%lAuto GodPot > %@&gd%,%P%65:  %P%7%P%lFast break > %@&fb%,%P%66:  %P%7%P%lBPS = %P%d%@#bps%%P%7.,%P%67:  %P%7%P%lAuto sell > %@&ats%,%P%68:  %P%7%P%lSell Amount = %P%d%@#autosell%,%P%69:  %P%7%P%lJacob Skip > %@&sk%,%P%610:  %P%7%P%lDirections > %&direction%,%P%612:  %P%7%P%lNotify 10x > %@&spw%,%P%613:  %P%7%P%lWebhook input,%P%614:  %P%7%P%lWebhook Timer.,%P%615:  %P%7%P%lCooldown Timer.,%P%c%P%lExit Menu]]",Select which option category to select. Use ENTER or LEFT CLICK,"%&mainmenu%")
+//prompt(&mainmenu,"$$[selection[%P%c%P%lExit Menu,,%P%r%P%a%P%lScript Config,%P%61:  %P%7%P%lProfit Calc > %@&pc%,%P%62:  %P%7%P%lCooldown > %@&cd%,%P%63:  %P%7%P%lAuto Cookie > %@&ck%,%P%64:  %P%7%P%lAuto GodPot > %@&gd%,%P%65:  %P%7%P%lAuto Start > %@&autostart%,%P%66:  %P%7%P%lFast break > %@&fb%,%P%67:  %P%7%P%lBPS = %P%d%@#bps%%P%7.,%P%68:  %P%7%P%lAuto sell > %@&ats%,%P%69:  %P%7%P%lSell Amount = %P%d%@#autosell%,%P%610:  %P%7%P%lJacob's Event > %@&sk%,%P%611:  %P%7%P%lCFG start > %@&dsp%,%P%612:  %P%7%P%lDirections > %&direction%,%P%613:  %P%7%P%lNotify 10x > %@&spw%,%P%614:  %P%7%P%lWebhook input,%P%615:  %P%7%P%lWebhook Timer.,%P%616:  %P%7%P%lCooldown Timer.,%P%c%P%lExit Menu]]",Select which option category to select. Use ENTER or LEFT CLICK,"%&mainmenu%")
+ifmatches(%&mainmenu%, "Profit Calc")
+if(@profitoff)
+log("%@&prefix% Profit > &aON")
+unset(@profitoff)
+set(@profiton)
+else
+log("%@&prefix% Profit > &cOFF")
+unset(@profiton)
+set(@profitoff)
+endif
+endif
+ifmatches(%&mainmenu%, "Auto Start")
+log(%@&prefix% Auto Start is currently under &4MAINTENANCE.)
+//if(@autostartoff)
+//    log("%@&prefix% Auto Start > &aON")
+//    unset(@autostartoff)
+//    set(@autostarton)
+//else
+//    log("%@&prefix% Auto Start > &cOFF")
+//    unset(@autostarton)
+//    set(@autostartoff)
+//endif
+endif
+ifmatches(%&mainmenu%, "CFG start")
+if(@displayoff)
+log("%@&prefix% Script config output on start > &aON")
+unset(@displayoff)
+set(@displayon)
+else
+log("%@&prefix% Script config output on start > &cOFF")
+unset(@displayon)
+set(@displayoff)
+endif
+endif
+ifmatches(%&mainmenu%, "Notify 10x")
+if(@spamwebhookoff)
+log("%@&prefix% Will now spam the webhook url once anti-staff has activated > &aON")
+unset(@spamwebhookoff)
+set(@spamwebhookon)
+else
+log("%@&prefix% Will not spam the webhook url once anti-staff has activated  > &cOFF")
+unset(@spamwebhookon)
+set(@spamwebhookoff)
+endif
+endif
+ifmatches(%&mainmenu%, "Jacob Skip")
+//prompt(&event,"$$[selection[%P%c%P%lExit Menu,%P%c,%P%7%P%m   %P%r%P%a%P%l EVENT POSITION %P%7%P%m   ,%P%61:  %P%e%P%lGOLD,%P%62:  %P%7%P%lSILVER,%P%63:  %P%4%P%lBRONZE,%P%64:  %P%7%P%l%P%aON %P%7: %P%cOFF]]","Select top layer direction. Use ENTER or LEFT CLICK",true"%&event%")
+//ifmatches(%&event%, "GOLD")
+//    unset(@bronze)
+//    unset(@silver)
+//    set(@gold)
+//    log(%@&prefix% Jacob's Event placement position - &eGOLD.)
+//endif
+//ifmatches(%&event%, "SILVER")
+//    unset(@bronze)
+//    unset(@gold)
+//    set(@silver)
+//    log(%@&prefix% Jacob's Event placement position - &7SILVER.)
+//endif
+//ifmatches(%&event%, "BRONZE")
+//    unset(@gold)
+//    unset(@silver)
+//    set(@bronze)
+//    log(%@&prefix% Jacob's Event placement position - &6BRONZE.)
+//endif
+//ifmatches(%&event%, "OFF")
+//    if(@skipeventsoff)
+//        log("%@&prefix% Jacob's Event Skipper > &aON")
+//        unset(@skipeventsoff)
+//        set(@skipeventson)
+//    else
+//        log("%@&prefix% Jacob's Event Skipper > &cOFF")
+//        unset(@skipeventson)
+//        set(@skipeventsoff)
+//    endif
+//endif
+if(@skipeventsoff)
+log("%@&prefix% Jacob's Event Skipper > &aON")
+unset(@skipeventsoff)
+set(@skipeventson)
+else
+log("%@&prefix% Jacob's Event Skipper > &cOFF")
+unset(@skipeventson)
+set(@skipeventsoff)
+endif
+endif
+ifmatches(%&mainmenu%, "Cooldown")
+if(@cooldownoff)
+log("%@&prefix% Cooldown > &aON")
+unset(@cooldownoff)
+set(@cooldownon)
+else
+log("%@&prefix% Cooldown > &cOFF")
+unset(@cooldownon)
+set(@cooldownoff)
+endif
+endif
+ifmatches(%&mainmenu%, "Cooldown Timer")
+prompt(@#cooldowntick,"$$?","Enter how often you want the script to take a break..'ENTER IN SECONDS'")
+log("%@&prefix% Cooldown Timer: &d%@#cooldowntick%")
+endif
+ifmatches(%&mainmenu%, "Auto Cookie")
+if(@cookieoff)
+log("%@&prefix% Auto Cookie > &aON")
+unset(@cookieoff)
+set(@cookieon)
+else
+log("%@&prefix% Auto Cookie > &cOFF")
+unset(@cookieon)
+set(@cookieoff)
+endif
+endif
+ifmatches(%&mainmenu%, "Auto Godpot")
+if(@autogodoff)
+log("%@&prefix% Auto Godpot > &aON")
+unset(@autogodoff)
+set(@autogodon)
+else
+log("%@&prefix% Auto Godpot > &cOFF")
+unset(@autogodon)
+set(@autogodoff)
+endif
+endif
+ifmatches(%&mainmenu%, "Directions")
+prompt(&directionmenu,"$$[selection[%P%c%P%lExit Menu,%P%c,%P%7%P%m   %P%r%P%a%P%l Directions %P%7%P%m   ,%P%61:  %P%7%P%lEAST,%P%62:  %P%7%P%lWEST,%P%63:  %P%7%P%lNORTH,%P%64:  %P%7%P%lSOUTH]]","Select top layer direction. Use ENTER or LEFT CLICK",true,"%&directionmenu%")
+ifmatches(%&directionmenu%, "EAST")
+unset(@west)
+unset(@north)
+unset(@south)
+set(@east)
+unset(@westset)
+unset(@northset)
+unset(@southset)
+set(@eastset)
+@&startdirection = "east"
+log("%@&prefix% Direction: EAST")
+endif
+ifmatches(%&directionmenu%, "WEST")
+unset(@east)
+unset(@north)
+unset(@south)
+set(@west)
+unset(@eastset)
+unset(@northset)
+unset(@southset)
+set(@westset)
+@&startdirection = "west"
+log("%@&prefix% Direction: WEST")
+endif
+ifmatches(%&directionmenu%, "NORTH")
+unset(@south)
+unset(@west)
+unset(@east)
+set(@north)
+unset(@southset)
+unset(@westset)
+unset(@eastset)
+set(@northset)
+@&startdirection = "north"
+log("%@&prefix% Direction: NORTH")
+endif
+ifmatches(%&directionmenu%, "SOUTH")
+unset(@north)
+unset(@west)
+unset(@east)
+set(@south)
+unset(@northset)
+unset(@westset)
+unset(@eastset)
+set(@southset)
+@&startdirection = "south"
+log("%@&prefix% Direction: SOUTH")
+endif
+endif
+ifmatches(%&mainmenu%, "Webhook input")
+prompt(@&url,"$$?","Enter your wanted discord server webhook.")
+log("%@&prefix% Webhook: &d%@&url%")
+endif
+ifmatches(%&mainmenu%, "Auto sell")
+if(@autoselloff)
+log("%@&prefix% Auto sell > &aON")
+unset(@autoselloff)
+set(@autosellon)
+else
+log("%@&prefix% Auto sell > &cOFF")
+unset(@autosellon)
+set(@autoselloff)
+endif
+endif
+ifmatches(%&mainmenu%, "Sell Amount")
+prompt(@#autosell,"$$?","Enter at what amount you want to auto sell.")
+if(@#autosell != 0)
+if(@#autosell > 64)
+#stack = %@#autosell% / 64
+&amount = %#stack% &7Stacks &7or &d%@#autosell%
+log("%@&prefix% Auto sell at: &d%&amount% &cMutant Nether Wart")
+else
+log("%@&prefix% Auto sell at: &d%@#autosell% &cMutant Nether Wart")
+endif
+else
+log(%@&prefix% The amount is too low\, please input 1 or more.)
+endif
+endif
+ifmatches(%&mainmenu%, "Webhook Timer")
+prompt(@#wbtime,"$$?","Enter how often do you want information webhooks sent. Type in seconds.")
+if(@#wbtime > 59)
+#wbtimedis = %@#wbtime% / 60
+log("%@&prefix% Webhook Interval in minutes: &d%#wbtimedis%&7 minutes")
+log("%@&prefix% Webhook Interval in seconds: &d%@#wbtime%&7 seconds")
+else
+log("%@&prefix% Webhook Interval: &d%@#wbtime%&7 seconds")
+endif
+endif
+ifmatches(%&mainmenu%, "Fast break")
+if(@fastbreakoff)
+log("%@&prefix% FastBreak > &aON")
+unset(@fastbreakoff)
+set(@fastbreakon)
+else
+log("%@&prefix% FastBreak > &cOFF")
+unset(@fastbreakon)
+set(@fastbreakoff)
+endif
+endif
+ifmatches(%&mainmenu%, "BPS")
+prompt(@#bps,"$$?","Enter how many blocks per second you want to break.")
+log("%@&prefix% Blocks per second: &d%@#bps%")
+endif
+ifmatches(%&mainmenu%, "Exit")
+set(stop)
+endif
+until(stop)
+unset(stop)
+stop()

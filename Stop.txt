@@ -1,0 +1,40 @@
+notify("&cGonzu Core","Stopping the scripts!",1000)
+exstop(STOP,LOOPS,WEBSTATUS)
+holdmouse(false)
+disable()
+setlabel(profit,,profit)
+setlabel(info,,info)
+keyup(left)
+keyup(right)
+keyup(forward)
+keyup(back)
+clearchat()
+#invvalue = 0
+#amount_mutant_netherwart = 0
+#amount_enchanted_netherwart = 0
+#amount_netherwart = 0
+#value_mutant_netherwart_ininv = 0
+#value_enchanted_netherwart_ininv = 0
+#value_netherwart_ininv = 0
+#added_mutant_netherwarts = 0
+#value_mutant_netherwart = 51200
+#value_enchanted_netherwart = 320
+#value_netherwart = 2
+#amount_mutant_netherwart_start = getitemstacksize("Mutant Nether Wart")
+#amount_enchanted_netherwart = getitemstacksize("Enchanted Nether Wart")
+#amount_netherwart = getitemstacksize("Nether Wart")
+#value_mutant_netherwart_ininv = %#amount_mutant_netherwart_start% * %#value_mutant_netherwart%
+#value_enchanted_netherwart_ininv = %#amount_enchanted_netherwart% * %#value_enchanted_netherwart%
+#value_netherwart_ininv = %#amount_netherwart% * %#value_netherwart%
+#end_total = %#value_mutant_netherwart_ininv% + %#value_enchanted_netherwart_ininv% + %#value_netherwart_ininv%
+#madetotal = %#end_total% - %@#start_total%
+set(&made,%#madetotal%)
+&regex = "(\d)(?=(\d{3})+(?!\d))"
+regexreplace(&made,%&regex%,"$1,")
+getslotitemnbt(%INVSLOT%,&it,#invstack,#datavar,&nbtinv)
+strip(&nbt,%&nbtinv%)
+match(%&nbt%,"Counter: ([\d,]+)",&counter,1)
+log(%@&prefix% Coins made: &c%&made%&e coins&7\, time it took: %@&timetotal%&7.)
+log(%@&prefix% Hoe counter when started: &c%@&hoe_start%&7\, current hoe counter: &a%&counter%)
+log(%@&prefix% Layers farmed: &a%@#layersfarmed%)
+log(%@&prefix% Rows farmed: &a%@#rowsfarmed%)
